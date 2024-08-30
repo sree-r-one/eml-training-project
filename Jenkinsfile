@@ -15,6 +15,9 @@ pipeline{
         string(name: 'BATCH_SIZE', defaultValue: '8', description: 'Batch size')
         string(name: 'EPOCHS', defaultValue: '300', description: 'Number of epochs to train')
 
+        string(name: 'TRAIN_SAMPLES', defaultValue: '17283', description: 'Number of samples in the training dataset')
+        string(name: 'VAL_SAMPLES', defaultValue: '5289', description: 'Number of samples in the validation dataset')
+
         string(name: 'TRAIN_TFRECORD', defaultValue: 'D:/LS3_LPC/Data/Train/train.tfrecords', description: 'Path to training TFRecord')
         string(name: 'VAL_TFRECORD', defaultValue: 'D:/LS3_LPC/Data/Val/val.tfrecords', description: 'Path to validation TFRecord')
         string(name: 'CHECKPOINT_PATH', defaultValue: 'D:/LS3_LPC/Checkpoints/Checkpoint-{epoch:04d}.hdf5', description: 'Path to save model checkpoints')
@@ -41,6 +44,9 @@ pipeline{
                     def BATCH_SIZE = params.BATCH_SIZE.trim()
                     def EPOCHS = params.EPOCHS.trim()
 
+                    def TRAIN_SAMPLES = params.TRAIN_SAMPLES.trim() 
+                    def VAL_SAMPLES = params.VAL_SAMPLES.trim()                     
+
                     def TRAIN_TFRECORD = params.TRAIN_TFRECORD.trim()
                     def VAL_TFRECORD = params.VAL_TFRECORD.trim()
                     def CHECKPOINT_PATH = params.CHECKPOINT_PATH.trim()
@@ -59,6 +65,9 @@ pipeline{
                     echo "BATCH_SIZE : ${BATCH_SIZE}"
                     echo "EPOCHS : ${EPOCHS}"
 
+                    echo "TRAIN_SAMPLES  : ${TRAIN_SAMPLES}"                    
+                    echo "VAL_SAMPLES  : ${VAL_SAMPLES}"
+                    
                     echo "TRAIN_TFRECORD : ${TRAIN_TFRECORD}"
                     echo "VAL_TFRECORD : ${VAL_TFRECORD}"
                     echo "CHECKPOINT_PATH : ${CHECKPOINT_PATH}" 
