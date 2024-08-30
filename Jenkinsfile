@@ -81,7 +81,11 @@ pipeline {
         }
 
         stage('Docker Execution') {
-            echo "IMAGE_HEIGHT : ${env.IMAGE_HEIGHT}"
+            steps{
+                script{
+                    echo "IMAGE_HEIGHT : ${env.IMAGE_HEIGHT}"
+                }
+            }
         }
 
     }
