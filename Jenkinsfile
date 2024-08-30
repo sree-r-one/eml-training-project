@@ -1,5 +1,6 @@
 pipeline {
-
+    agent any
+    
     parameters {
         // Image parameters
         string(name: 'IMAGE_HEIGHT', defaultValue: '576', description: 'Height of input images')
