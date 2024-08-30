@@ -80,10 +80,34 @@ pipeline {
             }
         }
 
-        stage('Docker Execution') {
-            steps{
-                script{
-                    echo "IMAGE_HEIGHT : ${env.IMAGE_HEIGHT}"
+        stage('Docker Build and Run') {
+            steps {
+                script {
+                    // Build the Docker image
+                    sh '''
+                    docker build -t my-ml-job:latest .
+                    '''
+
+                    // Run the Docker container with the parameters
+                    sh """
+                    docker run --rm \\
+                        -e IMAGE_HEIGHT=${env.IMAGE_HEIGHT} \\
+                        -e IMAGE_WIDTH=${env.IMAGE_WIDTH} \\
+                        -e CHANNELS=${env.CHANNELS} \\
+                        -e IMAGE_MEAN=${env.IMAGE_MEAN} \\
+                        -e TOTAL_CLASSES=${env.TOTAL_CLASSES} \\
+                        -e END_ACTIVATION=${env.END_ACTIVATION} \\
+                        -e LEARNING_RATE=${env.LEARNING_RATE} \\
+                        -e BATCH_SIZE=${env.BATCH_SIZE} \\
+                        -e EPOCHS=${env.EPOCHS} \\
+                        -e TRAIN_SAMPLES=${env.TRAIN_SAMPLES} \\
+                        -e VAL_SAMPLES=${env.VAL_SAMPLES} \\
+                        -e TRAIN_TFRECORD=${env.TRAIN_TFRECORD} \\
+                        -e VAL_TFRECORD=${env.VAL_TFRECORD} \\
+                        -e CHECKPOINT_PATH=${env.CHECKPOINT_PATH} \\
+                        -e TRAIN_LOG_PATH=${env.TRAIN_LOG_PATH} \\
+                        my-ml-job:latest
+                    """
                 }
             }
         }
