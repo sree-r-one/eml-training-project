@@ -1,5 +1,4 @@
 pipeline {
-    agent { dockerfile true } // Use a Docker agent for build consistency
 
     parameters {
         // Image parameters
@@ -29,7 +28,7 @@ pipeline {
     }
 
     stages {
-        
+
         stage('Parameters Extraction and Trimming') {
             steps {
                 script {
