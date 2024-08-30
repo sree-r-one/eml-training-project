@@ -25,6 +25,7 @@ pipeline{
     }
 
     stages{
+
         stage('Parameters Extraction and Trimming'){
             steps{
                 script{
@@ -76,7 +77,40 @@ pipeline{
             }
         }
     }
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    sh 'docker build -t my_ml_training_image .'
+                }
+            }
+        }
 
+        stage('Run TensorFlow Training') {
+            agent {
+                docker {
+                    image 'my_ml_training_image'
+                    args '-u root --gpus all'
+                    }
+                }
+                steps {
+                    script {
+                        sh """
+                        python test.py --train_samples=${TRAIN_SAMPLES} \
+                                        --val_samples=${VAL_SAMPLES} \
+                                        --epochs=${EPOCHS} \
+                                        --batch_size=${BATCH_SIZE} \
+                                        --learning_rate=${LEARNING_RATE} \
+                                        --train_tfrecord=${TRAIN_TFRECORD} \
+                                        --val_tfrecord=${VAL_TFRECORD} \
+                                        --checkpoint_path=${CHECKPOINT_PATH} \
+                                        --train_log_path=${TRAIN_LOG_PATH} \
+                                        --image_mean=${IMAGE_MEAN} \
+                                        --total_classes=${TOTAL_CLASSES} \
+                                        --end_activation=${END_ACTIVATION}
+                        """
+                        }
+                    }
+                }
     post {
         always {
             echo 'Pipeline completed!'
