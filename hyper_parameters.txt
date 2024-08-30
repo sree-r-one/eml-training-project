@@ -1,0 +1,17 @@
+    image_height = 576
+    image_width = 672
+    channels = 1
+
+    image_mean = 128.12657067878447                          
+    total_classes = 7
+
+    end_activation = 'softmax'
+
+    learning_rate = 0.0001
+    batch_size = 8
+    epochs = 300
+
+    train_samples = 37491         
+    val_samples = 5289
+
+   
