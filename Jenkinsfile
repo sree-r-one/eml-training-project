@@ -32,9 +32,9 @@ pipeline{
 
                     def IMAGE_MEAN = params.IMAGE_MEAN.trim()            
                     def TOTAL_CLASSES = params.TOTAL_CLASSES.trim()
-                    
+
                     // Set default value after defining the parameter
-                    params.END_ACTIVATION = params.END_ACTIVATION ?: 'softmax'
+                    // params.END_ACTIVATION = params.END_ACTIVATION ?: 'softmax'
                     def END_ACTIVATION = params.END_ACTIVATION.trim()
 
                     def LEARNING_RATE = params.LEARNING_RATE.trim()
