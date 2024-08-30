@@ -9,7 +9,7 @@ pipeline{
         string(name: 'IMAGE_MEAN', defaultValue: '128.12657067878447', description: 'Mean value for image normalization')
         string(name: 'TOTAL_CLASSES', defaultValue: '7', description: 'Total number of classes')
 
-        choice(name: 'END_ACTIVATION', choices: ['softmax', 'sigmoid', 'linear'], description: 'Activation function for the output layer',defaultValue: 'softmax')
+        choice(name: 'END_ACTIVATION', choices: ['softmax', 'sigmoid', 'linear'], description: 'Activation function for the output layer')
         
         string(name: 'LEARNING_RATE', defaultValue: '0.0001', description: 'Learning rate')
         string(name: 'BATCH_SIZE', defaultValue: '8', description: 'Batch size')
@@ -32,7 +32,9 @@ pipeline{
 
                     def IMAGE_MEAN = params.IMAGE_MEAN.trim()            
                     def TOTAL_CLASSES = params.TOTAL_CLASSES.trim()
-
+                    
+                    // Set default value after defining the parameter
+                    params.END_ACTIVATION = params.END_ACTIVATION ?: 'softmax'
                     def END_ACTIVATION = params.END_ACTIVATION.trim()
 
                     def LEARNING_RATE = params.LEARNING_RATE.trim()
