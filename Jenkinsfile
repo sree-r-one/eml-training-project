@@ -10,16 +10,37 @@ pipeline{
     }
 
     stages{
-        stage('Parameters'){
+        stage('Parameters Extraction and Trimming'){
             steps{
                 script{
-                    echo "EPOCHS : ${params.EPOCHS}"
-                    echo "BATCH_SIZE : ${params.BATCH_SIZE}"
-                    echo "LEARNING_RATE : ${params.LEARNING_RATE}"
-                    echo "TRAIN_TFRECORD : ${params.TRAIN_TFRECORD}"
-                    echo "VAL_TFRECORD : ${params.VAL_TFRECORD}"
+                    // Extract and Trim the parameters 
+                    def EPOCHS = params.EPOCHS.trim()
+                    def BATCH_SIZE = params.BATCH_SIZE.trim()
+                    def LEARNING_RATE = params.LEARNING_RATE.trim()
+                    def TRAIN_TFRECORD = params.TRAIN_TFRECORD.trim()
+                    def VAL_TFRECORD = params.VAL_TFRECORD.trim()
+
+                    echo "EPOCHS : ${EPOCHS}"
+                    echo "BATCH_SIZE : ${BATCH_SIZE}"
+                    echo "LEARNING_RATE : ${LEARNING_RATE}"
+                    echo "TRAIN_TFRECORD : ${TRAIN_TFRECORD}"
+                    echo "VAL_TFRECORD : ${VAL_TFRECORD}"
                 }
             }
+        }
+    }
+
+    post {
+        always {
+            echo 'Pipeline completed!'
+        }
+        success {
+            echo 'Pipeline succeeded!'
+            // Send success notification
+        }
+        failure {
+            echo 'Pipeline failed!'
+            // Send failure notification
         }
     }
 
