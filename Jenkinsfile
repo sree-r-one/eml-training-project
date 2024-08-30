@@ -1,6 +1,6 @@
 pipeline {
     agent any
-    
+
     parameters {
         // Image parameters
         string(name: 'IMAGE_HEIGHT', defaultValue: '576', description: 'Height of input images')
@@ -78,6 +78,10 @@ pipeline {
                     echo "TRAIN_LOG_PATH : ${env.TRAIN_LOG_PATH}" 
                 }
             }
+        }
+
+        stage('Docker Execution') {
+            echo "IMAGE_HEIGHT : ${env.IMAGE_HEIGHT}"
         }
 
     }
