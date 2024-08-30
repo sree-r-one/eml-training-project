@@ -76,39 +76,14 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                script {
-                    sh 'docker build -t my_ml_training_image .'
-                }
+               sh '''
+          node --version
+          git --version
+          curl --version
+        '''
             }
         }
 
-        stage('Run TensorFlow Training') {
-            agent {
-                docker {
-                    image 'my_ml_training_image'
-                    args '-u root --gpus all'
-                }
-            }
-            steps {
-                script {
-                    sh """
-                    python test.py --train_samples=${env.TRAIN_SAMPLES} \
-                                   --val_samples=${env.VAL_SAMPLES} \
-                                   --epochs=${env.EPOCHS} \
-                                   --batch_size=${env.BATCH_SIZE} \
-                                   --learning_rate=${env.LEARNING_RATE} \
-                                   --train_tfrecord=${env.TRAIN_TFRECORD} \
-                                   --val_tfrecord=${env.VAL_TFRECORD} \
-                                   --checkpoint_path=${env.CHECKPOINT_PATH} \
-                                   --train_log_path=${env.TRAIN_LOG_PATH} \
-                                   --image_mean=${env.IMAGE_MEAN} \
-                                   --total_classes=${env.TOTAL_CLASSES} \
-                                   --end_activation=${env.END_ACTIVATION}
-                    """
-                }
-            }
-        }
-    }
 
     post {
         always {
