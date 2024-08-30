@@ -29,6 +29,7 @@ pipeline {
     }
 
     stages {
+        
         stage('Parameters Extraction and Trimming') {
             steps {
                 script {
@@ -36,7 +37,7 @@ pipeline {
                     env.IMAGE_HEIGHT = params.IMAGE_HEIGHT.trim()
                     env.IMAGE_WIDTH = params.IMAGE_WIDTH.trim()
                     env.CHANNELS = params.CHANNELS.trim()
-                    
+
                     env.IMAGE_MEAN = params.IMAGE_MEAN.trim()
                     env.TOTAL_CLASSES = params.TOTAL_CLASSES.trim()
 
@@ -79,15 +80,6 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') { // Placeholder for actual Docker build commands
-            steps {
-                sh '''
-                node --version
-                git --version
-                curl --version
-                '''
-            }
-        }
     }
 
     post {
