@@ -1,5 +1,5 @@
 pipeline {
-    agent any 
+    agent {dockerfile true} 
 
     parameters {
         string(name: 'IMAGE_HEIGHT', defaultValue: '576', description: 'Height of input images')
