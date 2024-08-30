@@ -1,4 +1,4 @@
-pipeline{
+pipeline {
     agent any 
 
     parameters {
@@ -24,59 +24,56 @@ pipeline{
         string(name: 'TRAIN_LOG_PATH', defaultValue: 'D:/LS3_LPC/train_logs.csv', description: 'Path to save training logs')
     }
 
-    stages{
-
-        stage('Parameters Extraction and Trimming'){
-            steps{
-                script{
+    stages {
+        stage('Parameters Extraction and Trimming') {
+            steps {
+                script {
                     // Extract and Trim the parameters 
-                    def IMAGE_HEIGHT = params.IMAGE_HEIGHT.trim()
-                    def IMAGE_WIDTH = params.IMAGE_WIDTH.trim()
-                    def CHANNELS = params.CHANNELS.trim()
+                    env.IMAGE_HEIGHT = params.IMAGE_HEIGHT.trim()
+                    env.IMAGE_WIDTH = params.IMAGE_WIDTH.trim()
+                    env.CHANNELS = params.CHANNELS.trim()
 
-                    def IMAGE_MEAN = params.IMAGE_MEAN.trim()            
-                    def TOTAL_CLASSES = params.TOTAL_CLASSES.trim()
+                    env.IMAGE_MEAN = params.IMAGE_MEAN.trim()            
+                    env.TOTAL_CLASSES = params.TOTAL_CLASSES.trim()
 
-                    // Set default value after defining the parameter
-                    // params.END_ACTIVATION = params.END_ACTIVATION ?: 'softmax'
-                    def END_ACTIVATION = params.END_ACTIVATION.trim()
+                    env.END_ACTIVATION = params.END_ACTIVATION.trim()
 
-                    def LEARNING_RATE = params.LEARNING_RATE.trim()
-                    def BATCH_SIZE = params.BATCH_SIZE.trim()
-                    def EPOCHS = params.EPOCHS.trim()
+                    env.LEARNING_RATE = params.LEARNING_RATE.trim()
+                    env.BATCH_SIZE = params.BATCH_SIZE.trim()
+                    env.EPOCHS = params.EPOCHS.trim()
 
-                    def TRAIN_SAMPLES = params.TRAIN_SAMPLES.trim() 
-                    def VAL_SAMPLES = params.VAL_SAMPLES.trim()                     
+                    env.TRAIN_SAMPLES = params.TRAIN_SAMPLES.trim() 
+                    env.VAL_SAMPLES = params.VAL_SAMPLES.trim()                     
 
-                    def TRAIN_TFRECORD = params.TRAIN_TFRECORD.trim()
-                    def VAL_TFRECORD = params.VAL_TFRECORD.trim()
-                    def CHECKPOINT_PATH = params.CHECKPOINT_PATH.trim()
-                    def TRAIN_LOG_PATH = params.TRAIN_LOG_PATH.trim()
+                    env.TRAIN_TFRECORD = params.TRAIN_TFRECORD.trim()
+                    env.VAL_TFRECORD = params.VAL_TFRECORD.trim()
+                    env.CHECKPOINT_PATH = params.CHECKPOINT_PATH.trim()
+                    env.TRAIN_LOG_PATH = params.TRAIN_LOG_PATH.trim()
 
-                    echo "IMAGE_HEIGHT : ${IMAGE_HEIGHT}"
-                    echo "IMAGE_WIDTH : ${IMAGE_WIDTH}"
-                    echo "CHANNELS : ${CHANNELS}"
+                    echo "IMAGE_HEIGHT : ${env.IMAGE_HEIGHT}"
+                    echo "IMAGE_WIDTH : ${env.IMAGE_WIDTH}"
+                    echo "CHANNELS : ${env.CHANNELS}"
 
-                    echo "IMAGE_MEAN : ${IMAGE_MEAN}"
-                    echo "TOTAL_CLASSES : ${TOTAL_CLASSES}"
+                    echo "IMAGE_MEAN : ${env.IMAGE_MEAN}"
+                    echo "TOTAL_CLASSES : ${env.TOTAL_CLASSES}"
 
-                    echo "END_ACTIVATION : ${END_ACTIVATION}"
+                    echo "END_ACTIVATION : ${env.END_ACTIVATION}"
                     
-                    echo "LEARNING_RATE : ${LEARNING_RATE}"
-                    echo "BATCH_SIZE : ${BATCH_SIZE}"
-                    echo "EPOCHS : ${EPOCHS}"
+                    echo "LEARNING_RATE : ${env.LEARNING_RATE}"
+                    echo "BATCH_SIZE : ${env.BATCH_SIZE}"
+                    echo "EPOCHS : ${env.EPOCHS}"
 
-                    echo "TRAIN_SAMPLES  : ${TRAIN_SAMPLES}"                    
-                    echo "VAL_SAMPLES  : ${VAL_SAMPLES}"
+                    echo "TRAIN_SAMPLES  : ${env.TRAIN_SAMPLES}"                    
+                    echo "VAL_SAMPLES  : ${env.VAL_SAMPLES}"
                     
-                    echo "TRAIN_TFRECORD : ${TRAIN_TFRECORD}"
-                    echo "VAL_TFRECORD : ${VAL_TFRECORD}"
-                    echo "CHECKPOINT_PATH : ${CHECKPOINT_PATH}" 
-                    echo "TRAIN_LOG_PATH : ${TRAIN_LOG_PATH}" 
+                    echo "TRAIN_TFRECORD : ${env.TRAIN_TFRECORD}"
+                    echo "VAL_TFRECORD : ${env.VAL_TFRECORD}"
+                    echo "CHECKPOINT_PATH : ${env.CHECKPOINT_PATH}" 
+                    echo "TRAIN_LOG_PATH : ${env.TRAIN_LOG_PATH}" 
                 }
             }
         }
-    }
+
         stage('Build Docker Image') {
             steps {
                 script {
@@ -90,27 +87,29 @@ pipeline{
                 docker {
                     image 'my_ml_training_image'
                     args '-u root --gpus all'
-                    }
                 }
-                steps {
-                    script {
-                        sh """
-                        python test.py --train_samples=${TRAIN_SAMPLES} \
-                                        --val_samples=${VAL_SAMPLES} \
-                                        --epochs=${EPOCHS} \
-                                        --batch_size=${BATCH_SIZE} \
-                                        --learning_rate=${LEARNING_RATE} \
-                                        --train_tfrecord=${TRAIN_TFRECORD} \
-                                        --val_tfrecord=${VAL_TFRECORD} \
-                                        --checkpoint_path=${CHECKPOINT_PATH} \
-                                        --train_log_path=${TRAIN_LOG_PATH} \
-                                        --image_mean=${IMAGE_MEAN} \
-                                        --total_classes=${TOTAL_CLASSES} \
-                                        --end_activation=${END_ACTIVATION}
-                        """
-                        }
-                    }
+            }
+            steps {
+                script {
+                    sh """
+                    python test.py --train_samples=${env.TRAIN_SAMPLES} \
+                                   --val_samples=${env.VAL_SAMPLES} \
+                                   --epochs=${env.EPOCHS} \
+                                   --batch_size=${env.BATCH_SIZE} \
+                                   --learning_rate=${env.LEARNING_RATE} \
+                                   --train_tfrecord=${env.TRAIN_TFRECORD} \
+                                   --val_tfrecord=${env.VAL_TFRECORD} \
+                                   --checkpoint_path=${env.CHECKPOINT_PATH} \
+                                   --train_log_path=${env.TRAIN_LOG_PATH} \
+                                   --image_mean=${env.IMAGE_MEAN} \
+                                   --total_classes=${env.TOTAL_CLASSES} \
+                                   --end_activation=${env.END_ACTIVATION}
+                    """
                 }
+            }
+        }
+    }
+
     post {
         always {
             echo 'Pipeline completed!'
@@ -124,6 +123,4 @@ pipeline{
             // Send failure notification
         }
     }
-
-
 }
