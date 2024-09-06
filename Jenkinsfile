@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+    // agent any
+    agent {
+        docker {
+            image 'node:18-alpine'
+        }
+    }
 
     parameters {
         // Image parameters
@@ -77,6 +82,11 @@ pipeline {
                     echo "CHECKPOINT_PATH : ${env.CHECKPOINT_PATH}" 
                     echo "TRAIN_LOG_PATH : ${env.TRAIN_LOG_PATH}" 
                 }
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'node -v'
             }
         }
 
