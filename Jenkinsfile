@@ -1,11 +1,12 @@
 pipeline {
-     agent any
+// agent any
     // agent {
     //     docker {
     //         image 'node:18-alpine'
     //     }
     // }
-
+    agent { dockerfile true }
+     
     parameters {
         // Image parameters
         string(name: 'IMAGE_HEIGHT', defaultValue: '576', description: 'Height of input images')
