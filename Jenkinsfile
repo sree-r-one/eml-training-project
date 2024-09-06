@@ -1,10 +1,10 @@
 pipeline {
-    // agent any
-    agent {
-        docker {
-            image 'node:18-alpine'
-        }
-    }
+     agent any
+    // agent {
+    //     docker {
+    //         image 'node:18-alpine'
+    //     }
+    // }
 
     parameters {
         // Image parameters
@@ -84,12 +84,12 @@ pipeline {
                 }
             }
         }
-        stage('Test') {
-            steps {
-                sh 'node -v'
-            }
-        }
-
+        
+    //  stage('Test') {
+    //             steps {
+    //                 sh 'node -v'
+    //             }
+    //         }
     }
 
     post {
