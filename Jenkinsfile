@@ -1,10 +1,7 @@
 pipeline {
-     agent any
-    // agent {
-    //     docker {
-    //         image 'node:18-alpine'
-    //     }
-    // }
+    agent {
+        label 'docker-agent'
+    }
 
     parameters {
         // Image parameters
@@ -85,11 +82,7 @@ pipeline {
             }
         }
         
-    //  stage('Test') {
-    //             steps {
-    //                 sh 'node -v'
-    //             }
-    //         }
+
     }
 
     post {
@@ -98,11 +91,9 @@ pipeline {
         }
         success {
             echo 'Pipeline succeeded!'
-            // Send success notification
         }
         failure {
             echo 'Pipeline failed!'
-            // Send failure notification
         }
     }
 }
