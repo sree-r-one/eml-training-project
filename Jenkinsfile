@@ -83,27 +83,27 @@ pipeline {
         }
         stage('Run Training') {
             steps {
-                script {
-                    // Command to run train.py with Jenkins parameters as command-line arguments
-                    sh """
-                        python3 test.py \
-                        --image_height ${env.IMAGE_HEIGHT} \
-                        --image_width ${env.IMAGE_WIDTH} \
-                        --channels ${env.CHANNELS} \
-                        --image_mean ${env.IMAGE_MEAN} \
-                        --total_classes ${env.TOTAL_CLASSES} \
-                        --end_activation ${env.END_ACTIVATION} \
-                        --learning_rate ${env.LEARNING_RATE} \
-                        --batch_size ${env.BATCH_SIZE} \
-                        --epochs ${env.EPOCHS} \
-                        --train_samples ${env.TRAIN_SAMPLES} \
-                        --val_samples ${env.VAL_SAMPLES} \
-                        --train_tfrecord ${env.TRAIN_TFRECORD} \
-                        --val_tfrecord ${env.VAL_TFRECORD} \
-                        --checkpoint_path ${env.CHECKPOINT_PATH} \
-                        --train_log_path ${env.TRAIN_LOG_PATH}
-                    """
-                }
+                // script {
+                //     // Command to run train.py with Jenkins parameters as command-line arguments
+                //     sh """
+                //         python3 test.py \
+                //         --image_height ${env.IMAGE_HEIGHT} \
+                //         --image_width ${env.IMAGE_WIDTH} \
+                //         --channels ${env.CHANNELS} \
+                //         --image_mean ${env.IMAGE_MEAN} \
+                //         --total_classes ${env.TOTAL_CLASSES} \
+                //         --end_activation ${env.END_ACTIVATION} \
+                //         --learning_rate ${env.LEARNING_RATE} \
+                //         --batch_size ${env.BATCH_SIZE} \
+                //         --epochs ${env.EPOCHS} \
+                //         --train_samples ${env.TRAIN_SAMPLES} \
+                //         --val_samples ${env.VAL_SAMPLES} \
+                //         --train_tfrecord ${env.TRAIN_TFRECORD} \
+                //         --val_tfrecord ${env.VAL_TFRECORD} \
+                //         --checkpoint_path ${env.CHECKPOINT_PATH} \
+                //         --train_log_path ${env.TRAIN_LOG_PATH}
+                //     """
+                // }
             }
         }
 
