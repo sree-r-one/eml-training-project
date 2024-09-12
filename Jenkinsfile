@@ -81,6 +81,15 @@ pipeline {
                 }
             }
         }
+
+         stage('Training Section') {
+             steps {
+                script {
+                    echo "Trainign" 
+                }
+             }
+             
+         }
      
 
     }
