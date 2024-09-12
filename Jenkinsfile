@@ -81,10 +81,7 @@ pipeline {
                 }
             }
         }
-        stage('Run Training') {
-            echo "training step"
-            
-        }
+     
 
     }
 
